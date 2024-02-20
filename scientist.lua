@@ -109,6 +109,15 @@ local function killNpc(npc)
 	end)
 end
 
+local function sendMessage(message)
+	local args = {
+		[1] = message,
+		[2] = "All"
+	}
+
+	game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))
+end
+
 workspace.Level.Actors.SeparatedNPCS.Guards.ChildAdded:Connect(function(npc)
 	killNpc(npc)
 end)
@@ -135,6 +144,14 @@ for _, v in pairs(workspace.Level.Actors.SeparatedNPCS.Specials:GetChildren()) d
 end
 
 local keycardHolder = workspace.Level.Actors.SeparatedNPCS.Workers:FindFirstChild("NPC0")
+local keycardHolderRadio = keycardHolder.Character.Head.Investigate.Radio
+
+if keycardHolderRadio.Visible == true then
+	sendMessage("\n[Script]: Radio call detected (Worker). Waiting...")
+	while keycardHolderRadio.Visible == true do task.wait() end
+	sendMessage("\n[Script]: Radio call has ended.")
+end
+
 local keycardHolderHRP = keycardHolder.Character.HumanoidRootPart 
 tpNpc(keycardHolder, Vector3.new(-68.7646103, 2.31619978, -44.3416023))
 
