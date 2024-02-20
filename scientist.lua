@@ -164,9 +164,9 @@ local keycardHolder = workspace.Level.Actors.SeparatedNPCS.Workers:FindFirstChil
 local keycardHolderRadio = keycardHolder.Character.Head.Investigate.Radio
 
 if keycardHolderRadio.Visible == true then
-	sendMessage("\n[Script]: Radio call detected (Worker). Waiting...")
+	sendMessage("[Script]: Radio call detected (Worker). Waiting...")
 	while keycardHolderRadio.Visible == true do task.wait() end
-	sendMessage("\n[Script]: Radio call has ended.")
+	sendMessage("[Script]: Radio call has ended.")
 end
 
 local keycardHolderHRP = keycardHolder.Character.HumanoidRootPart 
