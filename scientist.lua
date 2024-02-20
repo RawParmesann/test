@@ -18,7 +18,7 @@ local TweenService = game:GetService("TweenService")
 
 local function tweenPlayer(Destination)
 	local HumanoidRootPart = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-	local timeForWay = (HumanoidRootPart.Position - Destination).Magnitude / 200
+	local timeForWay = (HumanoidRootPart.Position - Destination).Magnitude / 150
 	local Info = TweenInfo.new(timeForWay, Enum.EasingStyle.Linear, Enum.EasingDirection.In, 0, false, 0)
 	local TweenGoals = {CFrame = CFrame.new(Destination)}
 	local Tween = TweenService:Create(HumanoidRootPart, Info, TweenGoals)
