@@ -146,17 +146,17 @@ end
 local keycardHolder = workspace.Level.Actors.SeparatedNPCS.Workers:FindFirstChild("NPC0")
 local keycardHolderRadio = keycardHolder.Character.Head.Investigate.Radio
 
-if keycardHolderRadio.Visible == true then
-	sendMessage("[Script]: Radio call detected (Worker). Waiting...")
-	while keycardHolderRadio.Visible == true do task.wait() end
-	sendMessage("[Script]: Radio call has ended.")
-end
-
 local keycardHolderHRP = keycardHolder.Character.HumanoidRootPart 
 tpNpc(keycardHolder, Vector3.new(-68.7646103, 2.31619978, -44.3416023))
 
 while keycardHolderHRP.Position.X > -56 and keycardHolderHRP.Position.Z > -30 do
 	task.wait()
+end
+
+if keycardHolderRadio.Visible == true then
+	sendMessage("[Script]: Radio call detected (Worker). Waiting...")
+	while keycardHolderRadio.Visible == true do task.wait() end
+	sendMessage("[Script]: Radio call has ended.")
 end
 
 task.wait(0.5)
