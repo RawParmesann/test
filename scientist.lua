@@ -93,12 +93,38 @@ local function tpNpc(Npc, NpcPos)
 	end
 end
 
-local function WaitForObjectNameTip(Name, Tip)
+local function sendMessage(message)
+	local args = {
+		[1] = message,
+		[2] = "All"
+	}
+
+	game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))
+end
+
+local function resetLocalPlayer()
+	game.Players.LocalPlayer.Character.Humanoid.Health = -1
+end
+
+local function WaitForObjectNameTip(Name, Tip, ErrorMessage)
+	local found = false
 	local objectName = game:GetService("Players").LocalPlayer.PlayerGui.Weapons.WeaponGui.Interact.ObjectName
 	local objectTip = game:GetService("Players").LocalPlayer.PlayerGui.Weapons.WeaponGui.Interact.ObjectTip
+	spawn(function()
+		local time = 0
+		while time ~= 5 do
+			task.wait(1)
+			time += 1
+		end
+		if time == 5 and found == false then
+			sendMessage(ErrorMessage)
+			resetLocalPlayer()
+		end
+	end)
 	while objectName.Text ~= Name and objectTip.Text ~= Tip do
 		RunService.RenderStepped:Wait()
 	end
+	found = true
 end
 
 local function killNpc(npc)
@@ -107,15 +133,6 @@ local function killNpc(npc)
 		npc.Character.Head.Neck:Destroy()
 		npc.Character.HumanoidRootPart.MyForceInstance:Destroy()
 	end)
-end
-
-local function sendMessage(message)
-	local args = {
-		[1] = message,
-		[2] = "All"
-	}
-
-	game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest"):FireServer(unpack(args))
 end
 
 workspace.Level.Actors.SeparatedNPCS.Guards.ChildAdded:Connect(function(npc)
@@ -146,17 +163,17 @@ end
 local keycardHolder = workspace.Level.Actors.SeparatedNPCS.Workers:FindFirstChild("NPC0")
 local keycardHolderRadio = keycardHolder.Character.Head.Investigate.Radio
 
+if keycardHolderRadio.Visible == true then
+	sendMessage("\n[Script]: Radio call detected (Worker). Waiting...")
+	while keycardHolderRadio.Visible == true do task.wait() end
+	sendMessage("\n[Script]: Radio call has ended.")
+end
+
 local keycardHolderHRP = keycardHolder.Character.HumanoidRootPart 
 tpNpc(keycardHolder, Vector3.new(-68.7646103, 2.31619978, -44.3416023))
 
 while keycardHolderHRP.Position.X > -56 and keycardHolderHRP.Position.Z > -30 do
 	task.wait()
-end
-
-if keycardHolderRadio.Visible == true then
-	sendMessage("[Script]: Radio call detected (Worker). Waiting...")
-	while keycardHolderRadio.Visible == true do task.wait() end
-	sendMessage("[Script]: Radio call has ended.")
 end
 
 task.wait(0.5)
@@ -177,7 +194,7 @@ spawn(function()
 	end
 end)
 
-WaitForObjectNameTip("High Security Keycard", "Hit [F] to take")
+WaitForObjectNameTip("High Security Keycard", "Hit [F] to take", "[Script]: Keycard wasn't found. Resetting...")
 
 input.press(Enum.KeyCode.F) 
 didKeycard = true
@@ -193,7 +210,7 @@ spawn(function()
 	keypad:Destroy()
 end)
 
-WaitForObjectNameTip("Keycard Reader", "Hold [F] to use")
+WaitForObjectNameTip("Keycard Reader", "Hold [F] to use", "[Script]: Keycard Reader wasn't found. Resetting...")
 
 input.hold(Enum.KeyCode.F, keypad.Interact.Time.Value + 0.5)
 didKeypad = true
@@ -208,7 +225,7 @@ spawn(function()
 	controlRoomDoor:Destroy()
 end)
 
-WaitForObjectNameTip("Door", "Hit [F] to close")
+WaitForObjectNameTip("Door", "Hit [F] to close", "[Script]: Door wasn't found. Resetting...")
 
 input.press(Enum.KeyCode.F) 
 didControlRoomDoor = true
