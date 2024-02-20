@@ -260,19 +260,23 @@ end
 local waitForOpenDoorFunc = nil
 waitForOpenDoorFunc = objectiveList.ChildAdded:Connect(function(npc)
 	for _, v in pairs(workspace.Level.Actors.SeparatedNPCS.Guards:GetChildren()) do
-		local Radio = v.Character.Head.Investigate.Radio
-		if Radio.Visible == true then
-			sendMessage("[Script]: Radio call detected (Guard). Waiting...")
-			while keycardHolderRadio.Visible == true do task.wait() end
-			sendMessage("[Script]: Radio call has ended.")
+			if v.Name ~= "Highlight" then
+				local Radio = v.Character.Head.Investigate.Radio
+				if Radio.Visible == true then
+				sendMessage("[Script]: Radio call detected (Guard). Waiting...")
+				while keycardHolderRadio.Visible == true do task.wait() end
+				sendMessage("[Script]: Radio call has ended.")
+			end
 		end
 	end
 	for _, v in pairs(workspace.Level.Actors.SeparatedNPCS.Specials:GetChildren()) do
-		local Radio = v.Character.Head.Investigate.Radio
-		if Radio.Visible == true then
-			sendMessage("[Script]: Radio call detected (Falcon). Waiting...")
-			while keycardHolderRadio.Visible == true do task.wait() end
-			sendMessage("[Script]: Radio call has ended.")
+		if v.Name ~= "Highlight" then
+			local Radio = v.Character.Head.Investigate.Radio
+			if Radio.Visible == true then
+				sendMessage("[Script]: Radio call detected (Falcon). Waiting...")
+				while keycardHolderRadio.Visible == true do task.wait() end
+				sendMessage("[Script]: Radio call has ended.")
+			end
 		end
 	end
 				
